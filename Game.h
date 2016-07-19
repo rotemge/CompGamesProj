@@ -5,6 +5,9 @@
 #include "Wall.h"
 #include "Player.h"
 
+#define SIZE_ 20
+#define GRID 40
+
 class Game
 {
 public:
@@ -21,6 +24,13 @@ public:
 	void pauseGame();
 
 private:
+	enum WallState
+	{
+		NONE,
+		TEMP,
+		DONE
+	};
+
 	glm::mat4 _view;
 	glm::mat4 _projection;
 	glm::vec3 _lightPos;

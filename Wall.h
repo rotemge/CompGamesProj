@@ -10,11 +10,11 @@ public:
 		HORIZONTAL,
 		VERTICAL
 	};
-	Wall(glm::vec3 center, int size, Direction dir, int pos, int start, int end);
+	Wall(glm::vec3 center, int size, Direction dir, int index, int start, int end, float thickness);
 	void init();
 private:
-	int _size;
-	int _start, _end, _pos;
-	Direction _dir;
+	const int _start, _end, _index;
+	const Direction _dir;
+	const float THICK;
 };
 

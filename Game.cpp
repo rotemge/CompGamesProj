@@ -2,9 +2,8 @@
 #include <glm\gtc\matrix_transform.hpp>
 
 #define CENTER glm::vec3(0, 0, 0)
-#define SIZE 20
 
-Game::Game() : _lightPos(0, 17, 0), _camPos(0, 17, 20), _floor(CENTER, SIZE), _player(glm::vec3(0, 2, SIZE / 2))
+Game::Game() : _lightPos(0, 17, 0), _camPos(0, 17, 20), _floor(CENTER, SIZE_), _player(glm::vec3(0, 2, SIZE_ / 2))
 {
 }
 
@@ -12,10 +11,11 @@ void Game::init() {
 	_view = glm::lookAt(_camPos, CENTER, glm::vec3(0, 1, 0));
 	_projection = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
 	
-	_walls.push_back(new Wall(CENTER, SIZE, Wall::HORIZONTAL, 0, 0, SIZE));
-	_walls.push_back(new Wall(CENTER, SIZE, Wall::HORIZONTAL, SIZE-1, 0, SIZE));
-	_walls.push_back(new Wall(CENTER, SIZE, Wall::VERTICAL, 0, 1, SIZE));
-	_walls.push_back(new Wall(CENTER, SIZE, Wall::VERTICAL, SIZE-1, 1, SIZE));
+	float thick = ((float) SIZE_) / GRID;
+	_walls.push_back(new Wall(CENTER, SIZE_, Wall::HORIZONTAL, 0, 0, GRID, thick));
+	_walls.push_back(new Wall(CENTER, SIZE_, Wall::HORIZONTAL, GRID - 1, 0, GRID, thick));
+	_walls.push_back(new Wall(CENTER, SIZE_, Wall::VERTICAL,   0, 1, GRID - 1, thick));
+	_walls.push_back(new Wall(CENTER, SIZE_, Wall::VERTICAL,   GRID - 1, 1, GRID - 1, thick));
 	
 	for (Wall* w : _walls) {
 		w->init();
@@ -45,28 +45,28 @@ void Game::update(int deltaTime)
 
 void Game::upKeyPressed()
 {
-	if (_player.getPosition().z - (_player.getSize() / 2) > -SIZE / 2) {
+	if (_player.getPosition().z - (_player.getSize() / 2) > -SIZE_ / 2) {
 		_player.move(Player::MOVE_UP);
 	}	
 }
 
 void Game::downKeyPressed()
 {
-	if (_player.getPosition().z + (_player.getSize() / 2) < SIZE / 2) {
+	if (_player.getPosition().z + (_player.getSize() / 2) < SIZE_ / 2) {
 		_player.move(Player::MOVE_DOWN);
 	}
 }
 
 void Game::rightKeyPressed()
 {
-	if (_player.getPosition().x + (_player.getSize() / 2) < SIZE / 2) {
+	if (_player.getPosition().x + (_player.getSize() / 2) < SIZE_ / 2) {
 		_player.move(Player::MOVE_RIGHT);
 	}
 }
 
 void Game::leftKeyPressed()
 {
-	if (_player.getPosition().x - (_player.getSize() / 2) > -SIZE / 2) {
+	if (_player.getPosition().x - (_player.getSize() / 2) > -SIZE_ / 2) {
 		_player.move(Player::MOVE_LEFT);
 	}
 }

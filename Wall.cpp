@@ -3,15 +3,13 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <math.h>
 
-#define THICK 1
-
-Wall::Wall(glm::vec3 center, int size, Direction dir, int pos, int start, int end) :
+Wall::Wall(glm::vec3 center, int size, Direction direction, int index, int start, int end, float thickness) :
 	//position is the top left corner
-	FlatObject(dir == VERTICAL ?
-		center - glm::vec3(size / 2 - pos*THICK, 0, size / 2 - start*THICK) :
-		center - glm::vec3(size / 2 - start*THICK, 0, size / 2 - pos*THICK),
+	FlatObject(direction == VERTICAL ?
+		center - glm::vec3(size / 2 - index*thickness, 0, size / 2 - start*thickness) :
+		center - glm::vec3(size / 2 - start*thickness, 0, size / 2 - index*thickness),
 		"textures\\marble.bmp"),
-	_size(size), _start(start), _end(end), _pos(pos), _dir(dir)
+	_start(start), _end(end), _index(index), _dir(direction), THICK(thickness)
 {
 }
 
@@ -19,7 +17,7 @@ void Wall::init()
 {
 	Object::init();
 
-	int len = (_end - _start) * THICK;
+	float len = (_end - _start) * THICK;
 	glm::vec4 pos(_position, 1);
 
 	//1
