@@ -3,7 +3,7 @@
 
 #define CENTER glm::vec3(0, 0, 0)
 
-Game::Game() : _lightPos(0, 17, 0), _camPos(0, 17, 20), _floor(CENTER, SIZE_), _player(glm::vec3(0, 2, SIZE_ / 2))
+Game::Game() : _lightPos(0, 17, 0), _camPos(20, 17, 0), _floor(CENTER, SIZE_), _player(glm::vec3(0, 2, SIZE_ / 2))
 {
 }
 
@@ -16,9 +16,14 @@ void Game::init() {
 	_walls.push_back(new Wall(CENTER, SIZE_, Wall::HORIZONTAL, GRID - 1, 0, GRID, thick));
 	_walls.push_back(new Wall(CENTER, SIZE_, Wall::VERTICAL,   0, 1, GRID - 1, thick));
 	_walls.push_back(new Wall(CENTER, SIZE_, Wall::VERTICAL,   GRID - 1, 1, GRID - 1, thick));
+
+	_enemies[0] = new EnemyBall();
 	
 	for (Wall* w : _walls) {
 		w->init();
+	}
+	for (EnemyBall *b : _enemies) {
+		b->init();
 	}
 	_floor.init();
 	_player.init();
@@ -31,7 +36,10 @@ void Game::draw()
 	_player.draw(_projection, _view, _camPos, _lightPos, lightColor);
 	for (Wall* w:_walls){
 		w->draw(_projection, _view, _camPos, _lightPos, lightColor);
-	}	
+	}
+	for (EnemyBall *b : _enemies) {
+		b->draw(_projection, _view, _camPos, _lightPos, lightColor);
+	}
 }
 
 void Game::update(int deltaTime)
@@ -40,6 +48,9 @@ void Game::update(int deltaTime)
 	_player.update(deltaTime);
 	for (Wall* w : _walls) {
 		w->update(deltaTime);
+	}
+	for (EnemyBall *b : _enemies) {
+		b->update(deltaTime);
 	}
 }
 
@@ -74,7 +85,6 @@ void Game::leftKeyPressed()
 void Game::pauseGame()
 {
 }
-
 
 Game::~Game()
 {

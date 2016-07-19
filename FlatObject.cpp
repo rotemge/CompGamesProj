@@ -3,7 +3,7 @@
 
 
 FlatObject::FlatObject(glm::vec3 pos, const char* texture) : 
-	Object("shaders\\simple.vert", "shaders\\simple.frag", pos, glm::vec4(0.9, 0.9, 0.9, 1), texture)
+	Object("shaders\\simple.vert", "shaders\\simple.frag", pos, glm::vec4(1, 1, 1, 1), texture)
 {
 }
 

@@ -150,7 +150,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="bimage.cpp" />
+    <ClCompile Include="EnemyBall.cpp" />
     <ClCompile Include="FlatObject.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -165,7 +167,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="bimage.h" />
+    <ClInclude Include="EnemyBall.h" />
     <ClInclude Include="FlatObject.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Game.h" />

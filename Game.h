@@ -4,6 +4,7 @@
 #include "Floor.h"
 #include "Wall.h"
 #include "Player.h"
+#include "EnemyBall.h"
 
 #define SIZE_ 20
 #define GRID 40
@@ -39,6 +40,7 @@ private:
 	//game objects
 	Floor _floor;
 	std::vector<Wall*> _walls;
+	EnemyBall* _enemies[1];
 	Player _player;
 
 	//void _updateLivesText(const char* text);

@@ -29,7 +29,7 @@ public:
 	}
 
 	glm::mat4 getModel() { return _model; }
-	glm::vec3 getPosition() { return _position; }
+	const glm::vec3 getPosition() const { return _position; }
 
 protected:
 	glm::vec3 _position;
