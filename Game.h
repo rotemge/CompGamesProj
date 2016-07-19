@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "Floor.h"
-#include "Walls.h"
+#include "Wall.h"
 #include "Player.h"
 
 class Game
@@ -28,7 +28,7 @@ private:
 
 	//game objects
 	Floor _floor;
-	std::vector<Walls*> _walls;
+	std::vector<Wall*> _walls;
 	Player _player;
 
 	//void _updateLivesText(const char* text);

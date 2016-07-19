@@ -11,10 +11,14 @@ Game::Game() : _lightPos(0, 17, 0), _camPos(0, 17, 20), _floor(CENTER, SIZE), _p
 void Game::init() {
 	_view = glm::lookAt(_camPos, CENTER, glm::vec3(0, 1, 0));
 	_projection = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
-
-	for (int i = 0; i < 4; i++) {
-		_walls.push_back(new Walls(CENTER, SIZE, 90 * i));
-		_walls.back()->init();
+	
+	_walls.push_back(new Wall(CENTER, SIZE, Wall::HORIZONTAL, 0, 0, SIZE));
+	_walls.push_back(new Wall(CENTER, SIZE, Wall::HORIZONTAL, SIZE-1, 0, SIZE));
+	_walls.push_back(new Wall(CENTER, SIZE, Wall::VERTICAL, 0, 1, SIZE));
+	_walls.push_back(new Wall(CENTER, SIZE, Wall::VERTICAL, SIZE-1, 1, SIZE));
+	
+	for (Wall* w : _walls) {
+		w->init();
 	}
 	_floor.init();
 	_player.init();
@@ -25,7 +29,7 @@ void Game::draw()
 	glm::vec4 lightColor(1, 1, 0.9, 1);
 	_floor.draw(_projection, _view, _camPos, _lightPos, lightColor);
 	_player.draw(_projection, _view, _camPos, _lightPos, lightColor);
-	for (Walls* w:_walls){
+	for (Wall* w:_walls){
 		w->draw(_projection, _view, _camPos, _lightPos, lightColor);
 	}	
 }
@@ -34,7 +38,7 @@ void Game::update(int deltaTime)
 {
 	_floor.update(deltaTime);
 	_player.update(deltaTime);
-	for (Walls* w : _walls) {
+	for (Wall* w : _walls) {
 		w->update(deltaTime);
 	}
 }
@@ -74,7 +78,7 @@ void Game::pauseGame()
 
 Game::~Game()
 {
-	for (Walls* w : _walls) {
+	for (Wall* w : _walls) {
 		delete w;
 	}
 }

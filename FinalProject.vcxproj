@@ -159,7 +159,7 @@
     <ClCompile Include="OpenMeshObject.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ShadedObject.cpp" />
-    <ClCompile Include="Walls.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -174,7 +174,7 @@
     <ClInclude Include="OpenMeshObject.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ShadedObject.h" />
-    <ClInclude Include="Walls.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
