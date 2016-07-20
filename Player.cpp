@@ -2,12 +2,12 @@
 #include <glm\gtc\matrix_transform.hpp>
 
 Player::Player(const glm::vec3 pos) :
-	Ball(pos, glm::vec4(0.2, 0.2, 0.6, 1), "textures\\frontend-large.bmp")
-
+	Ball(pos, glm::vec4(0.2, 0.2, 0.6, 1), "textures\\frontend-large.bmp"), MOVE_SPEED(100)
 { }
 
 void Player::init() {
 	Ball::init();
+	_position.y += getSize() / 2;
 	_position.z -= getSize() / 2;
 }
 

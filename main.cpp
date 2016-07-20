@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <GL/freeglut.h>
 #include <iostream>
+#include <ctime>
 #ifdef POST_PROCESSING
 #include "PPBuffer.h"
 #endif
@@ -40,6 +41,8 @@ void resizeWindowHandler(int width, int height);
 
 int main(int argc, char **argv)
 {
+	srand(static_cast <unsigned> (time(0)));
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
