@@ -37,7 +37,14 @@ void EnemyBall::rotate(glm::mat4 base, float angle) {
 	_model = glm::rotate(base, _rotAng, axis);
 }
 
-void EnemyBall::hit(Wall::Direction side){}
+void EnemyBall::hit(Wall::Direction side){
+	if (Wall::HORIZONTAL == side) {
+		_direction.z = -_direction.z;
+	}
+	else {
+		_direction.x = -_direction.x;
+	}
+}
  
 glm::vec3 EnemyBall::getRandXZ(float low, float high, bool normalized) const {
 	float rx = low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)));

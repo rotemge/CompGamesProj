@@ -45,13 +45,15 @@ void Game::draw()
 
 void Game::update(int deltaTime)
 {
-	_floor.update(deltaTime);
 	_player.update(deltaTime);
-	for (Wall* w : _walls) {
-		w->update(deltaTime);
-	}
 	for (EnemyBall *b : _enemies) {
 		b->update(deltaTime);
+		for (Wall* w : _walls) {
+			if (w->hitWithBall(b->getPosition(), b->getSize() / 2)) {
+				b->hit(w->getDirection());
+				break;
+			}
+		}
 	}
 }
 

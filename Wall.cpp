@@ -71,3 +71,29 @@ void Wall::init()
 
 	defineBuffers();
 }
+
+bool Wall::hitWithBall(glm::vec3 ball, float rad)
+{
+	float upper = _vertices.at(0).z;
+	float lower = _vertices.at(10).z;
+	float left = _vertices.at(0).x;
+	float right = _vertices.at(10).x;
+	
+	if (lower > ball.z - rad && upper < ball.z - rad
+		&& ball.x > left && ball.x < right) {
+		return true; // hit from bellow
+	}
+	if (upper < ball.z + rad && lower > ball.z + rad
+		&& ball.x > left && ball.x < right) {
+		return true; // hit from above
+	}
+	if (right > ball.x - rad && left < ball.x - rad
+		&& ball.z > upper && ball.z < lower) {
+		return true; // hit from left
+	}
+	if (left < ball.x + rad && right > ball.x + rad
+		&& ball.z > upper && ball.z < lower) {
+		return true; // hit from right
+	}
+	return false;
+}
