@@ -3,16 +3,17 @@
 #include <cstdlib>
 
 EnemyBall::EnemyBall(float limit) :
-	Ball(getRandXZ(-limit, limit, false), glm::vec4(0.8, 0.4, 0.5, 1), "textures\\black-white-stripes.bmp"),
-	MOVE_SPEED(1.f), _scale(glm::scale(glm::mat4(1), glm::vec3(0.7, 0.7, 0.7))), 
+	Ball(glm::vec3(0,0,0), glm::vec4(0.8, 0.4, 0.5, 1), "textures\\black-white-stripes.bmp"),
+	_limit(limit), MOVE_SPEED(3.f), _scaleFactor(1), //_scale(glm::scale(glm::mat4(1), glm::vec3(0.7, 0.7, 0.7))),
 	_direction(getRandXZ(-1, 1, true)), _rotAng(0)
 {
 }
 
 void EnemyBall::init() {
 	Ball::init();
-	float size = getSize();
-	_position.y += size / 2;
+	float lim = _limit - getRadius();
+	_position = getRandXZ(-lim, lim, false);
+	_position.y += getRadius();
 }
 GLuint EnemyBall::update(int deltaTime) {
 	float delta = deltaTime * 0.001f;
@@ -21,7 +22,7 @@ GLuint EnemyBall::update(int deltaTime) {
 
 	move(_scale, offset);
 	// angle = (arc length) / radius
-	rotate(_model, -glm::length(offset) / (getSize() / 2));
+	rotate(_model, -glm::length(offset) / getRadius());
 	
 	return 0; 
 }

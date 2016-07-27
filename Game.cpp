@@ -3,7 +3,7 @@
 
 #define CENTER glm::vec3(0, 0, 0)
 
-Game::Game() : _lightPos(0, 17, 0), _camPos(0, 17, 20), _floor(CENTER, SIZE_), 
+Game::Game() : _lightPos(0, 17, 0), _camPos(0, 30, 20), _floor(CENTER, SIZE_), 
 				_player(glm::vec3(0, (float)SIZE_ / GRID, SIZE_ / 2))
 {
 }
@@ -49,7 +49,7 @@ void Game::update(int deltaTime)
 	for (EnemyBall *b : _enemies) {
 		b->update(deltaTime);
 		for (Wall* w : _walls) {
-			if (w->hitWithBall(b->getPosition(), b->getSize() / 2)) {
+			if (w->hitWithBall(b->getPosition(), b->getRadius())) {
 				b->hit(w->getDirection());
 				break;
 			}

@@ -9,8 +9,11 @@ public:
 	void init();
 	GLuint update(int deltaTime);
 	void hit(Wall::Direction side);
+	float getRadius() { return getSize() / 2 * _scaleFactor; }
 private:
+	const float _limit;
 	const float MOVE_SPEED;
+	const float _scaleFactor;
 	const glm::mat4 _scale;
 	glm::vec3 _direction;
 	float _rotAng;
