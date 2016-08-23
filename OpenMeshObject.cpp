@@ -48,7 +48,7 @@ void OpenMeshObject::init()
 				_verticesRgb.push_back(normalize_colour(p[i], i));
 			}
 			_verticesRgb.push_back(1.f);
-			//calculate_vertex_normal(*fvIter, *fIter);
+			calculate_vertex_normal(*fvIter, *fIter);
 		}
 	}
 	_mesh.release_face_normals();

@@ -73,7 +73,6 @@ void FlatObject::defineBuffers() {
 		sizeof(glm::vec4) * 3,
 		(GLvoid*)(sizeof(glm::vec4) * 2));
 
-
 	// Unbind vertex array:
 	glBindVertexArray(0);
 }

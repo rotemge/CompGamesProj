@@ -3,7 +3,7 @@
 
 #define CENTER glm::vec3(0, 0, 0)
 
-Game::Game() : _lightPos(0, 25, 0), _camPos(0, 20, 20), _floor(CENTER, SIZE_), 
+Game::Game() : _lightPos(0, 5, 0), _camPos(0, 20, 20), _floor(CENTER, SIZE_), 
 				_player(glm::vec3(0, (float)SIZE_ / GRID, SIZE_ / 2))
 {
 }
@@ -32,7 +32,7 @@ void Game::init() {
 
 void Game::draw()
 {
-	glm::vec4 lightColor(1, 1, 0.9, 1);
+	glm::vec4 lightColor(0.8, 0.8, 0.7, 1);
 	_floor.draw(_projection, _view, _camPos, _lightPos, lightColor);
 	_player.draw(_projection, _view, _camPos, _lightPos, lightColor);
 	for (Wall* w:_walls){

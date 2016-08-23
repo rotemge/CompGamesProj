@@ -2,7 +2,7 @@
 #include "globals.h"
 
 Ball::Ball(const glm::vec3 pos, const glm::vec4 color, const char* texture) :
-	OpenMeshObject("shaders\\spherical.vert", "shaders\\simple.frag", pos, color, "meshes\\sphere.obj", texture)
+	OpenMeshObject("shaders\\phong_spherical.vert", "shaders\\phong.frag", pos, color, "meshes\\sphere.obj", texture)
 {
 }
 
@@ -25,14 +25,23 @@ void Ball::init() {
 				GL_STATIC_DRAW);
 
 			// Obtain attribute handles:
-			GLint _posAttr = glGetAttribLocation(_programID, "position");
-			glEnableVertexAttribArray(_posAttr);
-			glVertexAttribPointer(_posAttr, // attribute handle
+			GLint posAttr = glGetAttribLocation(_programID, "position");
+			glEnableVertexAttribArray(posAttr);
+			glVertexAttribPointer(posAttr, // attribute handle
 				4,          // number of scalars per vertex
 				GL_FLOAT,   // scalar type
 				GL_FALSE,
-				sizeof(glm::vec4),
+				sizeof(glm::vec4)  * 2,
 				0);
+
+			GLint normAttr = glGetAttribLocation(_programID, "norm");
+			glEnableVertexAttribArray(normAttr);
+			glVertexAttribPointer(normAttr, // attribute handle
+				4,          // number of scalars per vertex
+				GL_FLOAT,   // scalar type
+				GL_FALSE,
+				sizeof(glm::vec4) * 2,
+				(GLvoid*)(sizeof(glm::vec4)));
 
 			// Unbind vertex array:
 			glBindVertexArray(0);
