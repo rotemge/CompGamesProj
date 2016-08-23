@@ -3,7 +3,7 @@
 
 
 FlatObject::FlatObject(glm::vec3 pos, const char* texture) : 
-	Object("shaders\\simple.vert", "shaders\\simple.frag", pos, glm::vec4(1, 1, 1, 1), texture)
+	Object("shaders\\phong_regular.vert", "shaders\\phong.frag", pos, glm::vec4(1, 1, 1, 1), texture)
 {
 }
 
@@ -46,23 +46,32 @@ void FlatObject::defineBuffers() {
 
 	// Tells OpenGL that there is vertex data in this buffer object and what form that vertex data takes:
 	// Obtain attribute handles:
-	GLint posAttrib = glGetAttribLocation(_programID, "position");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, // attribute handle
+	GLint posAttr = glGetAttribLocation(_programID, "position");
+	glEnableVertexAttribArray(posAttr);
+	glVertexAttribPointer(posAttr, // attribute handle
 		4,          // number of scalars per vertex
 		GL_FLOAT,   // scalar type
 		GL_FALSE,
-		sizeof(glm::vec4) * 2,
+		sizeof(glm::vec4) * 3,
 		0);
 
-	GLint _texAttr = glGetAttribLocation(_programID, "texCoord");
-	glEnableVertexAttribArray(_texAttr);
-	glVertexAttribPointer(_texAttr, // attribute handle
+	GLint texAttr = glGetAttribLocation(_programID, "texCoord");
+	glEnableVertexAttribArray(texAttr);
+	glVertexAttribPointer(texAttr, // attribute handle
 		4,          // number of scalars per vertex
 		GL_FLOAT,   // scalar type
 		GL_FALSE,
-		sizeof(glm::vec4) * 2,
+		sizeof(glm::vec4) * 3,
 		(GLvoid*)(sizeof(glm::vec4)));
+
+	GLint normAttr = glGetAttribLocation(_programID, "norm");
+	glEnableVertexAttribArray(normAttr);
+	glVertexAttribPointer(normAttr,
+		4,
+		GL_FLOAT,
+		GL_FALSE,
+		sizeof(glm::vec4) * 3,
+		(GLvoid*)(sizeof(glm::vec4) * 2));
 
 
 	// Unbind vertex array:

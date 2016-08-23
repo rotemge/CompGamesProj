@@ -3,7 +3,7 @@
 
 #define CENTER glm::vec3(0, 0, 0)
 
-Game::Game() : _lightPos(0, 17, 0), _camPos(0, 30, 20), _floor(CENTER, SIZE_), 
+Game::Game() : _lightPos(0, 25, 0), _camPos(0, 20, 20), _floor(CENTER, SIZE_), 
 				_player(glm::vec3(0, (float)SIZE_ / GRID, SIZE_ / 2))
 {
 }
