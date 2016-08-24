@@ -7,7 +7,7 @@ class EnemyBall : public Ball
 public:
 	EnemyBall(float limit);
 	void init();
-	GLuint update(int deltaTime);
+	GLuint update(float deltaTime);
 	void hit(Wall::Direction side);
 	float getRadius() { return getSize() / 2 * _scaleFactor; }
 private:

@@ -11,13 +11,12 @@ EnemyBall::EnemyBall(float limit) :
 
 void EnemyBall::init() {
 	Ball::init();
-	float lim = _limit - getRadius();
+	float lim = _limit - getRadius()*2;
 	_position = getRandXZ(-lim, lim, false);
 	_position.y += getRadius();
 }
-GLuint EnemyBall::update(int deltaTime) {
-	float delta = deltaTime * 0.001f;
-	float speed = MOVE_SPEED * delta;
+GLuint EnemyBall::update(float deltaTime) {
+	float speed = MOVE_SPEED * deltaTime;
 	glm::vec3 offset(_direction * speed);
 
 	move(_scale, offset);

@@ -16,12 +16,13 @@ public:
 	~Game();
 	void init();
 	void draw();
-	void update(int deltaTime);  // milliseconds
+	void update(float deltaTime);  // seconds
 
 	void upKeyPressed();
 	void downKeyPressed();
 	void rightKeyPressed();
 	void leftKeyPressed();
+	void moveKeyReleased();
 	void pauseGame();
 
 private:
@@ -42,7 +43,9 @@ private:
 	std::vector<Wall*> _walls;
 	EnemyBall* _enemies[1];
 	Player _player;
+	bool _isKeyReleased;
 
+	bool handleBallMovement(float deltaTime);
 	//void _updateLivesText(const char* text);
 };
 

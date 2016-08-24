@@ -2,8 +2,8 @@
 #include "globals.h"
 
 
-FlatObject::FlatObject(glm::vec3 pos, const char* texture) : 
-	Object("shaders\\phong_regular.vert", "shaders\\phong.frag", pos, glm::vec4(1, 1, 1, 1), texture)
+FlatObject::FlatObject(glm::vec3 pos, const char* texture, float alpha) : 
+	Object("shaders\\phong_regular.vert", "shaders\\phong.frag", pos, glm::vec4(1, 1, 1, alpha), texture)
 {
 }
 
@@ -77,4 +77,4 @@ void FlatObject::defineBuffers() {
 	glBindVertexArray(0);
 }
 
-GLuint FlatObject::update(int deltaTime) { return 0; }
+GLuint FlatObject::update(float deltaTime) { return 0; }

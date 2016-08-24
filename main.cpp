@@ -35,6 +35,7 @@ InputManager* _inputManager;
 void init();
 void display();
 void keyboard(unsigned char key, int x, int y);
+void keyRelease(unsigned char key, int x, int y);
 void update();
 void resizeWindowHandler(int width, int height);
 //void timer(int value);
@@ -61,7 +62,7 @@ int main(int argc, char **argv)
 
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
-	//glutKeyboardUpFunc
+	glutKeyboardUpFunc(keyRelease);
 	glutIdleFunc(update);
 	glutReshapeFunc(resizeWindowHandler);
 
@@ -122,7 +123,7 @@ void keyboard(unsigned char key, int x, int y)
 {
 	unsigned int lowerKey = tolower(key);
 
-	switch (tolower(lowerKey))
+	switch (lowerKey)
 	{
 	case KEY_UP:
 		_world->upKeyPressed();
@@ -151,6 +152,19 @@ void keyboard(unsigned char key, int x, int y)
 	}
 }
 
+void keyRelease(unsigned char key, int x, int y) {
+	unsigned int lowerKey = tolower(key);
+	switch (lowerKey)
+	{
+		case KEY_UP:
+		case KEY_DOWN:
+		case KEY_RIGHT:
+		case KEY_LEFT:
+			_world->moveKeyReleased();
+			break;
+	}
+}
+
 void update()
 {
 	static int currentTime, deltaTime, prevTime = 0;
@@ -159,7 +173,7 @@ void update()
 	deltaTime = currentTime - prevTime;
 	prevTime = currentTime;
 
-	_world->update(deltaTime);
+	_world->update(deltaTime * 0.001f); // convert to seconds
 
 	glutPostRedisplay();
 }

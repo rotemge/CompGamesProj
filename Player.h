@@ -5,23 +5,25 @@ class Player :
 	public Ball
 {
 public:
-	enum Commands
+	enum MovingDirs
 	{
 		MOVE_UP,
 		MOVE_DOWN,
 		MOVE_LEFT,
 		MOVE_RIGHT,
-		NUM_OF_COMMANDS
+		MOVE_NONE
 	};
 
-	Player(const glm::vec3 pos);
+	Player(const glm::vec3 pos, float limit);
 	void init();
-	GLuint update(int deltaTime);	
+	GLuint update(float deltaTime);
 	// movement
-	void move(Commands comm);
+	void move(MovingDirs dir);
+	glm::vec3 getNextPosition(float speed);
 private:
 	const float MOVE_SPEED;
-	bool _commands[NUM_OF_COMMANDS];
-	void movelogic(glm::vec3 dir, float speed, Commands comm);
+	const float LIMIT;
+	glm::vec3 _currDirection;
+	bool isInLimits(const glm::vec3 pos);
 };
 

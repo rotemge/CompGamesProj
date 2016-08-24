@@ -3,13 +3,13 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <math.h>
 
-Wall::Wall(glm::vec3 center, int size, Direction direction, int index, int start, int end, float thickness) :
+Wall::Wall(glm::vec3 center, int size, Direction direction, int index, int start, int end, float thickness, bool isTemp) :
 	//position is the top left corner
 	FlatObject(direction == VERTICAL ?
 		center - glm::vec3(size / 2 - index*thickness, 0, size / 2 - start*thickness) :
 		center - glm::vec3(size / 2 - start*thickness, 0, size / 2 - index*thickness),
-		"textures\\frontend-large.bmp"),
-	_start(start), _end(end), _index(index), _dir(direction), THICK(thickness)
+		"textures\\frontend-large.bmp", isTemp ? 0.5f : 1),
+	_start(start), _end(end), _index(index), _dir(direction), THICK(thickness), _isTemp(isTemp)
 {
 }
 
@@ -42,7 +42,7 @@ void Wall::init()
 		_vertices.push_back(glm::vec4(0, 0.5, 0, 0));				// texture coordinates
 		_vertices.push_back(glm::normalize(glm::vec4(0, 1, 1, 0)));	// norm
 		//6
-		_vertices.push_back(pos + glm::vec4(len, THICK, THICK, 0));	// position ***************************
+		_vertices.push_back(pos + glm::vec4(len, THICK, THICK, 0));	// position
 		_vertices.push_back(glm::vec4(1, 0.5, 0, 0));				// texture coordinates
 		_vertices.push_back(glm::normalize(glm::vec4(0, 1, 1, 0)));	// norm
 		//7
@@ -91,24 +91,24 @@ void Wall::init()
 bool Wall::hitWithBall(glm::vec3 ball, float rad)
 {
 	float upper = _vertices.at(0).z;
-	float lower = _vertices.at(15).z;
+	float lower = _vertices.at(15).z; // vertex #6
 	float left = _vertices.at(0).x;
 	float right = _vertices.at(15).x;
 	
-	if (lower > ball.z - rad && upper < ball.z - rad
-		&& ball.x > left && ball.x < right) {
+	if (lower >= ball.z - rad && upper <= ball.z - rad
+		&& ball.x >= left && ball.x <= right) {
 		return true; // hit from bellow
 	}
-	if (upper < ball.z + rad && lower > ball.z + rad
-		&& ball.x > left && ball.x < right) {
+	if (upper <= ball.z + rad && lower >= ball.z + rad
+		&& ball.x >= left && ball.x <= right) {
 		return true; // hit from above
 	}
-	if (right > ball.x - rad && left < ball.x - rad
-		&& ball.z > upper && ball.z < lower) {
+	if (right >= ball.x - rad && left <= ball.x - rad
+		&& ball.z >= upper && ball.z <= lower) {
 		return true; // hit from left
 	}
-	if (left < ball.x + rad && right > ball.x + rad
-		&& ball.z > upper && ball.z < lower) {
+	if (left <= ball.x + rad && right >= ball.x + rad
+		&& ball.z >= upper && ball.z <= lower) {
 		return true; // hit from right
 	}
 	return false;
