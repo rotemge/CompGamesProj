@@ -2,8 +2,8 @@
 #include "globals.h"
 
 
-FlatObject::FlatObject(glm::vec3 pos, const char* texture, float alpha) : 
-	Object("shaders\\phong_regular.vert", "shaders\\phong.frag", pos, glm::vec4(1, 1, 1, alpha), texture)
+FlatObject::FlatObject(glm::vec3 pos, const char* texture) : 
+	Object("shaders\\phong_regular.vert", "shaders\\phong.frag", pos, glm::vec4(1, 1, 1, 1), texture)
 {
 }
 
@@ -42,7 +42,7 @@ void FlatObject::defineBuffers() {
 	glBufferData(GL_ARRAY_BUFFER,
 		sizeof(glm::vec4) * _vertices.size(),
 		&_vertices[0],
-		GL_STATIC_DRAW);
+		GL_DYNAMIC_DRAW);
 
 	// Tells OpenGL that there is vertex data in this buffer object and what form that vertex data takes:
 	// Obtain attribute handles:

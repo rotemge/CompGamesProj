@@ -1,6 +1,7 @@
 #include "EnemyBall.h"
 #include <glm\gtc\matrix_transform.hpp>
 #include <cstdlib>
+#include <iostream>
 
 EnemyBall::EnemyBall(float limit) :
 	Ball(glm::vec3(0,0,0), glm::vec4(0.8, 0.4, 0.5, 1), "textures\\black-white-stripes.bmp"),
@@ -14,7 +15,10 @@ void EnemyBall::init() {
 	float lim = _limit - getRadius()*2;
 	_position = getRandXZ(-lim, lim, false);
 	_position.y += getRadius();
+
+	std::cout << "enemy: (" << _position.x << "," << _position.y << "," << _position.z << ")" << std::endl;
 }
+
 GLuint EnemyBall::update(float deltaTime) {
 	float speed = MOVE_SPEED * deltaTime;
 	glm::vec3 offset(_direction * speed);

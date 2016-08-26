@@ -20,6 +20,7 @@ public:
 	// movement
 	void move(MovingDirs dir);
 	glm::vec3 getNextPosition(float speed);
+	bool isMoving();
 private:
 	const float MOVE_SPEED;
 	const float LIMIT;

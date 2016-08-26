@@ -57,6 +57,11 @@ glm::vec3 Player::getNextPosition(float delta) {
 	return _position + _currDirection*MOVE_SPEED * delta;
 }
 
+bool Player::isMoving()
+{
+	return _currDirection != glm::vec3(0,0,0);
+}
+
 bool Player::isInLimits(const glm::vec3 pos) {
 	float rad = getSize() / 2;
 	return pos.z/* - rad */>= -LIMIT
