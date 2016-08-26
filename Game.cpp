@@ -54,61 +54,10 @@ void Game::update(float deltaTime)
 {
 	// player
 	glm::vec3 nextPos = _player.getNextPosition(deltaTime);
-	glm::vec3 curPos = _player.getPosition();
 	bool isHit = handleBallMovement(deltaTime, nextPos);
 	if (!isHit) {
-		_player.update(deltaTime);
-		if (_player.isMoving()) {
-			// create\update temp wall
-			if (_walls.back()->isTemp() 
-				&& ((nextPos.z == curPos.z && _walls.back()->getDirection() == Wall::HORIZONTAL) 
-					|| (nextPos.x == curPos.x && _walls.back()->getDirection() == Wall::VERTICAL))) {
-				// use existing wall
-				Wall* w = _walls.back();
-				_walls.pop_back();
-				int lim;
-				if (nextPos.z == curPos.z) { //HORIZONTAL 
-					lim = posToIndex(nextPos.x);
-					if (nextPos.x < curPos.x) {
-						lim++;
-					}
-				}
-				else {
-					lim = posToIndex(nextPos.z);
-					if (nextPos.z < curPos.z) {
-						lim++;
-					}
-				}
-				_walls.push_back(new Wall(CENTER, SIZE_, w->getDirection(), w->getIndex(), 
-					std::min({ w->getStart(), w->getEnd(), lim }), std::max({ w->getStart(), w->getEnd(), lim }), thickness, true));
-				_walls.back()->init();
-				delete w;
-			}
-			else {
-				// create new wall
-				if (nextPos.z == curPos.z) {
-					int index = posToIndex(curPos.z);
-					int start = posToIndex(curPos.x);
-					int end = posToIndex(nextPos.x);
-					if (nextPos.x < curPos.x) {
-						start++;
-						end++;
-					}
-					_walls.push_back(new Wall(CENTER, SIZE_, Wall::HORIZONTAL, index, std::min(start, end), std::max(start, end), thickness, true));
-				}
-				else {
-					int index = posToIndex(curPos.x);
-					int start = posToIndex(curPos.z);
-					int end = posToIndex(nextPos.z);
-					if (nextPos.z < curPos.z) {
-						start++;
-						end++;
-					}
-					_walls.push_back(new Wall(CENTER, SIZE_, Wall::VERTICAL, index, std::min(start, end), std::max(start, end), thickness, true));
-				}
-				_walls.back()->init();
-			}
-		}		
+		handleWallBuilding(nextPos);
+		_player.update(deltaTime);		
 	}
 
 	// enemies
@@ -125,6 +74,59 @@ void Game::update(float deltaTime)
 				break;
 			}
 		}
+	}
+}
+
+void Game::handleWallBuilding(glm::vec3 nextPos) {
+	if (!_player.isMoving()) return;
+	glm::vec3 curPos = _player.getPosition();
+	if (_walls.back()->isTemp()
+		&& ((nextPos.z == curPos.z && _walls.back()->getDirection() == Wall::HORIZONTAL)
+			|| (nextPos.x == curPos.x && _walls.back()->getDirection() == Wall::VERTICAL))) {
+		// use existing wall
+		Wall* w = _walls.back();
+		_walls.pop_back();
+		int lim;
+		if (nextPos.z == curPos.z) { //HORIZONTAL 
+			lim = posToIndex(nextPos.x);
+			if (nextPos.x < curPos.x) {
+				lim++;
+			}
+		}
+		else {
+			lim = posToIndex(nextPos.z);
+			if (nextPos.z < curPos.z) {
+				lim++;
+			}
+		}
+		_walls.push_back(new Wall(CENTER, SIZE_, w->getDirection(), w->getIndex(),
+			std::min({ w->getStart(), w->getEnd(), lim }), std::max({ w->getStart(), w->getEnd(), lim }), thickness, true));
+		_walls.back()->init();
+		delete w;
+	}
+	else {
+		// create new wall
+		if (nextPos.z == curPos.z) {
+			int index = posToIndex(curPos.z);
+			int start = posToIndex(curPos.x);
+			int end = posToIndex(nextPos.x);
+			if (nextPos.x < curPos.x) {
+				start++;
+				end++;
+			}
+			_walls.push_back(new Wall(CENTER, SIZE_, Wall::HORIZONTAL, index, std::min(start, end), std::max(start, end), thickness, true));
+		}
+		else {
+			int index = posToIndex(curPos.x);
+			int start = posToIndex(curPos.z);
+			int end = posToIndex(nextPos.z);
+			if (nextPos.z < curPos.z) {
+				start++;
+				end++;
+			}
+			_walls.push_back(new Wall(CENTER, SIZE_, Wall::VERTICAL, index, std::min(start, end), std::max(start, end), thickness, true));
+		}
+		_walls.back()->init();
 	}
 }
 
@@ -147,10 +149,11 @@ bool Game::handleBallMovement(float deltaTime, glm::vec3 nextPos) {
 		}
 		if (!curOverlap && nextOverlap && !w->isTemp()) {
 			// got to a wall
+			handleWallBuilding(nextPos);
 			_player.update(deltaTime);
 			_player.move(Player::MOVE_NONE);
-			while (_walls.back()->isTemp()) {
-				_walls.back()->setTemp(false);
+			for (Wall* w : _walls) {
+				if (w->isTemp()) w->setTemp(false);
 			}
 			std::cout << "got to a wall" << std::endl;
 			return true;

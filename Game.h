@@ -46,6 +46,7 @@ private:
 	bool _isKeyReleased;
 
 	bool handleBallMovement(float deltaTime, glm::vec3 nextPos);
+	void handleWallBuilding(glm::vec3 nextPos);
 	void lifeLost();
 	//void _updateLivesText(const char* text);
 };
