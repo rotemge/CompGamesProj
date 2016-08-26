@@ -158,6 +158,10 @@ bool Game::handleBallMovement(float deltaTime, glm::vec3 nextPos) {
 			std::cout << "got to a wall" << std::endl;
 			return true;
 		}
+		if (curOverlap) {
+			_player.update(deltaTime);
+			return true;
+		}
 	}
 	return false;
 }
