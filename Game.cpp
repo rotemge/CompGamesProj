@@ -132,16 +132,16 @@ void Game::update(float deltaTime)
 
 void Game::handleEnemiesMovment(float deltaTime) {
 	for (EnemyBall *b : _enemies) {
-		b->update(deltaTime);
 		for (Wall* w : _walls) {
 			if (w->hitWithBall(b->getPosition(), b->getRadius())) {
 				if (w->isTemp()) {
 					lifeLost();
+					break;
 				}
 				else {
 					b->hit(w->getDirection());
+					break;
 				}
-				break;
 			}
 		}
 		for (EnemyBall *b2 : _enemies) {
@@ -151,6 +151,7 @@ void Game::handleEnemiesMovment(float deltaTime) {
 				b2->hit(Wall::HORIZONTAL);
 			}
 		}
+		b->update(deltaTime);
 	}
 }
 
@@ -232,7 +233,7 @@ bool Game::handlePlayerMovement(float deltaTime, glm::vec3 nextPos) {
 			for (Wall* w : _walls) {
 				if (w->isTemp()) w->setTemp(false);
 			}
-			std::cout << "got to a wall" << std::endl;
+			std::cout << "DEBUG :: got to a wall" << std::endl;
 			return true;
 		}
 		if (curOverlap) {
@@ -244,7 +245,7 @@ bool Game::handlePlayerMovement(float deltaTime, glm::vec3 nextPos) {
 }
 
 void Game::lifeLost() {
-	std::cout << "DIE" << std::endl;
+	std::cout << "DEBUG :: DIE" << std::endl;
 	// player back to start position
 	_player.resetPos(glm::vec3(halfThick, thickness, halfSize - thickness));
 	// destroy temp wall(s)

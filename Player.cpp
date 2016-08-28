@@ -4,8 +4,7 @@
 
 Player::Player(const glm::vec3 pos, float limit) :
 	Ball(pos, glm::vec4(0.2, 0.2, 0.6, 1), "textures\\frontend-large.bmp"), MOVE_SPEED(5), ROT_SPEED(2), LIMIT(limit), _rotation(0)
-{ 
-	std::cout << "player: (" << pos.x << "," << pos.y << "," << pos.z << ")" << std::endl;
+{
 }
 
 void Player::init() {
@@ -72,8 +71,8 @@ bool Player::isMoving()
 
 bool Player::isInLimits(const glm::vec3 pos) {
 	float rad = getSize() / 2;
-	return pos.z/* - rad */>= -LIMIT
-		&& pos.z/* + rad */<= LIMIT
-		&& pos.x/* - rad */>= -LIMIT
-		&& pos.x/* + rad */<= LIMIT;
+	return pos.z >= -LIMIT
+		&& pos.z <= LIMIT
+		&& pos.x >= -LIMIT
+		&& pos.x <= LIMIT;
 }

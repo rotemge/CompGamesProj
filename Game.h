@@ -8,7 +8,7 @@
 
 #define SIZE_ 20
 #define GRID 40
-#define ENEMIES 3
+#define ENEMIES 1
 
 class Game
 {

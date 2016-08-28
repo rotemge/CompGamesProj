@@ -13,11 +13,8 @@ EnemyBall::EnemyBall(float limit) :
 void EnemyBall::init() {
 	Ball::init();
 	float lim = _limit - getRadius()*2;
-	std::cout << "lim: " << lim << std::endl;
 	_position = getRandXZ(-lim, lim, false);
 	_position.y += getRadius();
-
-	std::cout << "enemy: (" << _position.x << "," << _position.y << "," << _position.z << ")" << std::endl;
 	_model = glm::translate(_scale, _position);
 }
 
@@ -39,7 +36,7 @@ void EnemyBall::move(glm::mat4 base, glm::vec3 offset) {
 		_position.x = glm::clamp(_position.x, -lim, lim);
 		hit(Wall::VERTICAL);
 	}
-	if(_position.z > lim || _position.z < -lim){
+	else if(_position.z > lim || _position.z < -lim){
 		_position.z = glm::clamp(_position.z, -lim, lim);
 		hit(Wall::HORIZONTAL);
 	}

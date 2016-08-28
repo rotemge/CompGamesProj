@@ -13,8 +13,7 @@ OpenMeshObject::OpenMeshObject(const char* vShaderFile,
 {
 }
 
-void OpenMeshObject::init()
-{
+void OpenMeshObject::init() {
 	Object::init();
 	loadMesh();
 	computeBoundingBox();
@@ -28,23 +27,16 @@ void OpenMeshObject::init()
 	Mesh::FaceVertexIter fvIter;
 
 	// go over all the faces
-	for (Mesh::FaceIter fIter = _mesh.faces_begin(); fIter != _mesh.faces_end(); ++fIter)
-	{
-		Mesh::Point center(0, 0, 0);
-		/* for each face - go over all the vertices_rgb that belong to it and compute their
-		average position (center) of face */
-		for (fvIter = _mesh.fv_iter(*fIter); fvIter.is_valid(); ++fvIter)
-		{
-			//sort out vertices_rgb
+	for (Mesh::FaceIter fIter = _mesh.faces_begin(); fIter != _mesh.faces_end(); ++fIter) {
+		for (fvIter = _mesh.fv_iter(*fIter); fvIter.is_valid(); ++fvIter) {
 			Mesh::Point& p = _mesh.point(*fvIter);
 			_vertices.push_back(glm::vec4(normalize(p[0], 0),
-				normalize(p[1], 1),
-				normalize(p[2], 2),
-				1));
+										  normalize(p[1], 1),
+										  normalize(p[2], 2),
+										  1));
 
 			//sort out colours
-			for (int i = 0; i < 3; i++)
-			{
+			for (int i = 0; i < 3; i++) {
 				_verticesRgb.push_back(normalize_colour(p[i], i));
 			}
 			_verticesRgb.push_back(1.f);
@@ -84,14 +76,13 @@ void OpenMeshObject::calculate_vertex_normal(const Mesh::VertexHandle &vHandle, 
 	_vertices.push_back(glm::vec4(meshNorm[0], meshNorm[1], meshNorm[2], 0));
 }
 
-/** This function computes the geometrical center and the axis aligned bounding box of the object.
+/** This function computes the axis aligned bounding box of the object.
 * The bounding box is represented by the lower left and upper right corners. */
-void OpenMeshObject::computeBoundingBox()
-{
+void OpenMeshObject::computeBoundingBox() {
 	// Vertex iterator is an iterator which goes over all the vertices_rgb of the mesh:
 	Mesh::VertexIter vertexIter;
 	// This is used to store the geometrical position of the vertices_rgb of the mesh:
-	Mesh::Point p, center;
+	Mesh::Point p;
 	const float fm = std::numeric_limits<float>::max();
 	Mesh::Point lowerLeft(fm, fm, fm);
 	Mesh::Point upperRight(-fm, -fm, -fm);
@@ -99,21 +90,17 @@ void OpenMeshObject::computeBoundingBox()
 	lowerLeft = upperRight = _mesh.point(*vertexIter);
 	
 	// This is how to go over all the vertices_rgb in the mesh:
-	for (vertexIter = _mesh.vertices_begin(); vertexIter != _mesh.vertices_end(); ++vertexIter)
-	{
+	for (vertexIter = _mesh.vertices_begin(); vertexIter != _mesh.vertices_end(); ++vertexIter) {
 		// This is how to get the extrema associated with the set of vertices_rgb:
 		p = _mesh.point(*vertexIter);
-		center += p;
-		for (int i = 0; i < 3; i++)
-		{
+		for (int i = 0; i < 3; i++) {
 			lowerLeft[i] = std::min(lowerLeft[i], p[i]);
 			upperRight[i] = std::max(upperRight[i], p[i]);
 		}
 	}
 
 	//calculate the differences and the mid points.
-	for (int i = 0; i<3; i++)
-	{
+	for (int i = 0; i < 3; i++) {
 		_lower[i] = lowerLeft[i];
 		_higher[i] = upperRight[i];
 		_diff[i] = upperRight[i] - lowerLeft[i];

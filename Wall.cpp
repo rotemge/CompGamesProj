@@ -99,18 +99,22 @@ bool Wall::hitWithBall(glm::vec3 ball, float rad)
 	
 	if (lower >= ball.z - rad && upper <= ball.z - rad
 		&& ball.x >= left && ball.x <= right) {
+//		std::cout << "DEBUG :: hit from bellow" << std::endl;
 		return true; // hit from bellow
 	}
 	if (upper <= ball.z + rad && lower >= ball.z + rad
 		&& ball.x >= left && ball.x <= right) {
+//		std::cout << "DEBUG :: hit from above" << std::endl;
 		return true; // hit from above
 	}
 	if (right >= ball.x - rad && left <= ball.x - rad
 		&& ball.z >= upper && ball.z <= lower) {
+//		std::cout << "DEBUG :: hit from the left" << std::endl;
 		return true; // hit from left
 	}
 	if (left <= ball.x + rad && right >= ball.x + rad
 		&& ball.z >= upper && ball.z <= lower) {
+//		std::cout << "DEBUG :: hit from the right" << std::endl;
 		return true; // hit from right
 	}
 	return false;
