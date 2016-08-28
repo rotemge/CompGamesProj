@@ -33,7 +33,16 @@ GLuint EnemyBall::update(float deltaTime) {
 }
 
 void EnemyBall::move(glm::mat4 base, glm::vec3 offset) {
+	float lim = _limit - getRadius();
 	_position += offset;
+	if (_position.x > lim || _position.x < -lim) {
+		_position.x = glm::clamp(_position.x, -lim, lim);
+		hit(Wall::VERTICAL);
+	}
+	if(_position.z > lim || _position.z < -lim){
+		_position.z = glm::clamp(_position.z, -lim, lim);
+		hit(Wall::HORIZONTAL);
+	}
 	_model = glm::translate(base, _position);
 }
 
