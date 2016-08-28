@@ -9,7 +9,7 @@ Wall::Wall(glm::vec3 center, int size, Direction direction, int index, int start
 	FlatObject(direction == VERTICAL ?
 		center - glm::vec3(size / 2 - index*thickness, 0, size / 2 - start*thickness) :
 		center - glm::vec3(size / 2 - start*thickness, 0, size / 2 - index*thickness),
-		"textures\\frontend-large.bmp"),
+		"textures\\frontend-large.bmp", glm::vec4(1, 1, 1, 1)),
 	_start(start), _end(end), _index(index), _dir(direction), THICK(thickness)
 {
 	setTemp(isTemp);
@@ -125,6 +125,6 @@ bool Wall::gridOverlap(int row, int col) {
 void Wall::setTemp(bool temp)
 {
 	_isTemp = temp;
-	_color.r = temp ? 0.5 : 1;
-	_color.a = temp ? 0.1 : 1;
+	_color.r = temp ? 0.5f : 1;
+	_color.a = temp ? 0.1f : 1;
 }

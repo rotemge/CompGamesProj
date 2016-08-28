@@ -8,6 +8,7 @@
 
 #define SIZE_ 20
 #define GRID 40
+#define ENEMIES 3
 
 class Game
 {
@@ -41,14 +42,15 @@ private:
 	//game objects
 	Floor _floor;
 	std::vector<Wall*> _walls;
-	EnemyBall* _enemies[1];
+	EnemyBall* _enemies[ENEMIES];
 	Player _player;
 	bool _isKeyReleased;
 	int _lives;
 	bool _paused;
 
-	bool handleBallMovement(float deltaTime, glm::vec3 nextPos);
+	bool handlePlayerMovement(float deltaTime, glm::vec3 nextPos);
 	void handleWallBuilding(glm::vec3 nextPos);
+	void handleEnemiesMovment(float deltaTime);
 	void lifeLost();
 };
 

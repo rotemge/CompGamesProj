@@ -2,8 +2,8 @@
 #include "globals.h"
 
 
-FlatObject::FlatObject(glm::vec3 pos, const char* texture) : 
-	Object("shaders\\phong_regular.vert", "shaders\\phong.frag", pos, glm::vec4(1, 1, 1, 1), texture)
+FlatObject::FlatObject(glm::vec3 pos, const char* texture, glm::vec4 color) :
+	Object("shaders\\phong_regular.vert", "shaders\\phong.frag", pos, color, texture)
 {
 }
 

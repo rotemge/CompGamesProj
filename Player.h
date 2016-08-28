@@ -24,8 +24,10 @@ public:
 	bool isMoving();
 private:
 	const float MOVE_SPEED;
+	const float ROT_SPEED;
 	const float LIMIT;
 	glm::vec3 _currDirection;
+	float _rotation;
 	bool isInLimits(const glm::vec3 pos);
 };
 

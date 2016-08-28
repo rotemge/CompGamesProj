@@ -82,7 +82,9 @@ void Game::init() {
 	_walls.push_back(new Wall(CENTER, SIZE_, Wall::VERTICAL,   0, 1, GRID - 1, thickness, false));
 	_walls.push_back(new Wall(CENTER, SIZE_, Wall::VERTICAL,   GRID - 1, 1, GRID - 1, thickness, false));
 
-	_enemies[0] = new EnemyBall((GRID / 2 - 1) * thickness);
+	for (int i = 0; i < ENEMIES; i++) {
+		_enemies[i] = new EnemyBall((GRID / 2 - 1) * thickness);
+	}
 	
 	for (Wall* w : _walls) {
 		w->init();
@@ -119,13 +121,16 @@ void Game::update(float deltaTime)
 	if (_lives == 0 || _paused) return;
 	// player
 	glm::vec3 nextPos = _player.getNextPosition(deltaTime);
-	bool isHit = handleBallMovement(deltaTime, nextPos);
+	bool isHit = handlePlayerMovement(deltaTime, nextPos);
 	if (!isHit) {
 		handleWallBuilding(nextPos);
 		_player.update(deltaTime);		
 	}
 
-	// enemies
+	handleEnemiesMovment(deltaTime);	
+}
+
+void Game::handleEnemiesMovment(float deltaTime) {
 	for (EnemyBall *b : _enemies) {
 		b->update(deltaTime);
 		for (Wall* w : _walls) {
@@ -137,6 +142,13 @@ void Game::update(float deltaTime)
 					b->hit(w->getDirection());
 				}
 				break;
+			}
+		}
+		for (EnemyBall *b2 : _enemies) {
+			if (b2 == b) continue;
+			if (glm::distance(b->getPosition(), b2->getPosition()) <= b->getRadius() + b2->getRadius()) {
+				b->hit(Wall::VERTICAL);;
+				b2->hit(Wall::HORIZONTAL);
 			}
 		}
 	}
@@ -196,7 +208,7 @@ void Game::handleWallBuilding(glm::vec3 nextPos) {
 }
 
 /** returns true if the ball stopped for some reason */
-bool Game::handleBallMovement(float deltaTime, glm::vec3 nextPos) {
+bool Game::handlePlayerMovement(float deltaTime, glm::vec3 nextPos) {
 	for (Wall* w : _walls) {
 		bool curOverlap = w->gridOverlap(posToIndex(_player.getPosition().z), posToIndex(_player.getPosition().x));
 		bool nextOverlap = w->gridOverlap(posToIndex(nextPos.z), posToIndex(nextPos.x));

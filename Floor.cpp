@@ -2,7 +2,7 @@
 
 
 Floor::Floor(glm::vec3 center, float size) :
-	FlatObject(center, "textures\\water035.bmp"), _width(size), _height(size)
+	FlatObject(center, "textures\\water035.bmp", glm::vec4(1, 1, 1, 1)), _width(size), _height(size)
 { }
 
 void Floor::init()
