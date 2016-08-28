@@ -97,8 +97,8 @@ void OpenMeshObject::computeBoundingBox()
 	Mesh::Point upperRight(-fm, -fm, -fm);
 	vertexIter = _mesh.vertices_begin();
 	lowerLeft = upperRight = _mesh.point(*vertexIter);
+	
 	// This is how to go over all the vertices_rgb in the mesh:
-
 	for (vertexIter = _mesh.vertices_begin(); vertexIter != _mesh.vertices_end(); ++vertexIter)
 	{
 		// This is how to get the extrema associated with the set of vertices_rgb:

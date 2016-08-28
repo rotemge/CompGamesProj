@@ -13,10 +13,12 @@ EnemyBall::EnemyBall(float limit) :
 void EnemyBall::init() {
 	Ball::init();
 	float lim = _limit - getRadius()*2;
+	std::cout << "lim: " << lim << std::endl;
 	_position = getRandXZ(-lim, lim, false);
 	_position.y += getRadius();
 
 	std::cout << "enemy: (" << _position.x << "," << _position.y << "," << _position.z << ")" << std::endl;
+	_model = glm::translate(_scale, _position);
 }
 
 GLuint EnemyBall::update(float deltaTime) {

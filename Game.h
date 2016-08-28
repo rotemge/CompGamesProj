@@ -44,10 +44,11 @@ private:
 	EnemyBall* _enemies[1];
 	Player _player;
 	bool _isKeyReleased;
+	int _lives;
+	bool _paused;
 
 	bool handleBallMovement(float deltaTime, glm::vec3 nextPos);
 	void handleWallBuilding(glm::vec3 nextPos);
 	void lifeLost();
-	//void _updateLivesText(const char* text);
 };
 

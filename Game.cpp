@@ -1,14 +1,75 @@
 #include "Game.h"
 #include <glm\gtc\matrix_transform.hpp>
 #include <iostream>
+#include <GL\glut.h> //glutBitmapCharacter
 
+#define MAX_LIVES 5
 #define CENTER glm::vec3(0, 0, 0)
 #define halfThick ((float)SIZE_ / GRID / 2)
 #define halfSize (SIZE_ / 2)
 #define thickness ((float)SIZE_ / GRID)
 
-Game::Game() : _lightPos(0, 5, 0), _camPos(0, 20, 20), _floor(CENTER, SIZE_), 
-				_player(glm::vec3(halfThick, thickness, halfSize + halfThick), halfSize - halfThick), _isKeyReleased(false)
+void print_bitmap_string(void* font, char* s) {
+	if (s && strlen(s)) {
+		while (*s) {
+			glutBitmapCharacter(font, *s);
+			s++;
+		}
+	}
+}
+
+void updateLivesText(int lives) {
+	std::string lifeText = std::string("LIVES: ") + std::to_string(lives);
+	char t[10] = { '\0' };
+	strcpy_s(t, strlen(lifeText.c_str()) + 1, lifeText.c_str());
+
+	glRasterPos2f(-0.95f, 0.92f);
+	print_bitmap_string(GLUT_BITMAP_8_BY_13, t);
+}
+
+void setDeadText() {
+	char t[30] = { '\0' };
+
+	char* lifeText = "YOU LOST";
+	size_t len = strlen(lifeText);
+	strcpy_s(t, len + 1, lifeText);
+	float pos = -(18.f * (len / 2)) / glutGet(GLUT_WINDOW_WIDTH);
+	glRasterPos2f(pos, 0.1f);
+	print_bitmap_string(GLUT_BITMAP_9_BY_15, t);
+
+	lifeText = "press space for a new game";
+	len = strlen(lifeText);
+	strcpy_s(t, len + 1, lifeText);
+	pos = -(15.f * (len / 2)) / glutGet(GLUT_WINDOW_WIDTH);
+	glRasterPos2f(pos, -0.1f);
+	print_bitmap_string(GLUT_BITMAP_9_BY_15, t);
+}
+
+void setPauseText() {
+	char t[30] = { '\0' };
+
+	char* text = "PAUSED";
+	size_t len = strlen(text);
+	strcpy_s(t, len + 1, text);
+	float pos = -(18.f * (len / 2)) / glutGet(GLUT_WINDOW_WIDTH);
+	glRasterPos2f(pos, 0.1f);
+	print_bitmap_string(GLUT_BITMAP_9_BY_15, t);
+
+	text = "press space to continue";
+	len = strlen(text);
+	strcpy_s(t, len + 1, text);
+	pos = -(15.f * (len / 2)) / glutGet(GLUT_WINDOW_WIDTH);
+	glRasterPos2f(pos, -0.1f);
+	print_bitmap_string(GLUT_BITMAP_9_BY_15, t);
+}
+
+int posToIndex(float pos) {
+	return (floor(pos / thickness) * thickness + halfSize) / thickness;
+}
+
+Game::Game() : _lightPos(0, 5, 0), _camPos(0, 18, 18), _floor(CENTER, SIZE_), 
+				_player(glm::vec3(halfThick, thickness, halfSize - thickness), halfSize - halfThick),
+				_isKeyReleased(false), _lives(MAX_LIVES), _paused(false)
 {
 }
 
@@ -31,10 +92,16 @@ void Game::init() {
 	}
 	_floor.init();
 	_player.init();
+	updateLivesText(_lives);
 }
 
 void Game::draw()
 {
+	if (_lives == 0) {
+		setDeadText();
+		return;
+	}
+	if (_paused) setPauseText();
 	glm::vec4 lightColor(0.8, 0.8, 0.7, 1);
 	_floor.draw(_projection, _view, _camPos, _lightPos, lightColor);
 	_player.draw(_projection, _view, _camPos, _lightPos, lightColor);
@@ -44,14 +111,12 @@ void Game::draw()
 	for (EnemyBall *b : _enemies) {
 		b->draw(_projection, _view, _camPos, _lightPos, lightColor);
 	}
-}
-
-int posToIndex(float pos) {
-	return (floor(pos / thickness) * thickness + halfSize) / thickness;
+	updateLivesText(_lives);
 }
 
 void Game::update(float deltaTime)
 {
+	if (_lives == 0 || _paused) return;
 	// player
 	glm::vec3 nextPos = _player.getNextPosition(deltaTime);
 	bool isHit = handleBallMovement(deltaTime, nextPos);
@@ -168,14 +233,15 @@ bool Game::handleBallMovement(float deltaTime, glm::vec3 nextPos) {
 
 void Game::lifeLost() {
 	std::cout << "DIE" << std::endl;
-	// TODO:
 	// player back to start position
+	_player.resetPos(glm::vec3(halfThick, thickness, halfSize - thickness));
 	// destroy temp wall(s)
-	//while (_walls.back()->isTemp()) {
-	//	delete _walls.back();
-	//	_walls.pop_back();
-	//}
+	while (_walls.back()->isTemp()) {
+		delete _walls.back();
+		_walls.pop_back();
+	}
 	// update lives - actual and on screen
+	_lives--;
 }
 
 void Game::moveKeyReleased() {
@@ -199,6 +265,17 @@ void Game::leftKeyPressed() {
 }
 
 void Game::pauseGame() {
+	if (_lives == 0) {
+		_lives = MAX_LIVES;
+		_isKeyReleased = false;
+		_paused = false;
+		while (_walls.size() > 4) {
+			delete _walls.back();
+			_walls.pop_back();
+		}
+		return;
+	}
+	_paused = !_paused;
 }
 
 Game::~Game()

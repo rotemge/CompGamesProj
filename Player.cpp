@@ -11,7 +11,6 @@ Player::Player(const glm::vec3 pos, float limit) :
 void Player::init() {
 	Ball::init();
 	_position.y += getSize() / 2;
-	_position.z -= getSize() / 2;
 }
 
 void Player::move(MovingDirs dir) {
@@ -55,6 +54,13 @@ GLuint Player::update(float deltaTime) {
 
 glm::vec3 Player::getNextPosition(float delta) {
 	return _position + _currDirection*MOVE_SPEED * delta;
+}
+
+void Player::resetPos(glm::vec3 pos)
+{
+	_position = pos;
+	_position.y += getSize() / 2;
+	_currDirection = glm::vec3(0, 0, 0);
 }
 
 bool Player::isMoving()

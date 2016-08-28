@@ -82,7 +82,7 @@ void init(void)
 	glDepthFunc(GL_LESS);
 	glFrontFace(GL_CW);
 	glDisable(GL_CULL_FACE);
-	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClearColor(0.0, 0.2, 0.3, 1.0);
 
 	// Creating the world
 	_world = new Game();
