@@ -14,19 +14,19 @@ void Floor::init()
 	//lower left corner
 	_vertices.push_back(pos + glm::vec4(-_width / 2, 0, -_height / 2, 0));	//position
 	_vertices.push_back(glm::vec4(0, 1, 0, 0));								//texture coordinates
-	_vertices.push_back(glm::vec4(0, 1, 0, 0));								// norm
+	_vertices.push_back(glm::vec4(0, 1, 0, 0));								// normal
 	//upper left corner
 	_vertices.push_back(pos + glm::vec4(-_width / 2, 0, _height / 2, 0));	//position
 	_vertices.push_back(glm::vec4(0, 0, 0, 0));								//texture coordinates
-	_vertices.push_back(glm::vec4(0, 1, 0, 0));								// norm
-	//lower right corner
-	_vertices.push_back(pos + glm::vec4(_width / 2, 0, -_height / 2, 0));	//position
-	_vertices.push_back(glm::vec4(1, 1, 0, 0));								//texture coordinates
-	_vertices.push_back(glm::vec4(0, 1, 0, 0));								// norm
+	_vertices.push_back(glm::vec4(0, 1, 0, 0));								// normal
 	//upper right corner
 	_vertices.push_back(pos + glm::vec4(_width / 2, 0, _height / 2, 0));	//position
 	_vertices.push_back(glm::vec4(1, 0, 0, 0));								//texture coordinates
-	_vertices.push_back(glm::vec4(0, 1, 0, 0));								// norm
+	_vertices.push_back(glm::vec4(0, 1, 0, 0));								// normal
+	//lower right corner
+	_vertices.push_back(pos + glm::vec4(_width / 2, 0, -_height / 2, 0));	//position
+	_vertices.push_back(glm::vec4(1, 1, 0, 0));								//texture coordinates
+	_vertices.push_back(glm::vec4(0, 1, 0, 0));								// normal
 
 	defineBuffers();
 }

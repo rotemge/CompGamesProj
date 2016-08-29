@@ -22,9 +22,11 @@ public:
 	bool gridOverlap(int row, int col);
 	void setTemp(bool temp);
 private:
-	const int _start, _end, _index;
+	const int _start, _end, _index, _size;
 	const Direction _dir;
 	const float THICK;
+	const glm::vec3 _center;
 	bool _isTemp;
+	glm::vec4 posToTexCoor(glm::vec4 pos);
 };
 

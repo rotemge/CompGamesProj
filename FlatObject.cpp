@@ -25,7 +25,7 @@ void FlatObject::draw(const glm::mat4 & projection, const glm::mat4& view, const
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glBindVertexArray(_vao);
 
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertices.size());
+		glDrawArrays(GL_QUADS, 0, _vertices.size());
 		glBindVertexArray(0);
 	}
 	END_OPENGL;
