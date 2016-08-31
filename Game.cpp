@@ -133,13 +133,14 @@ void Game::update(float deltaTime)
 void Game::handleEnemiesMovment(float deltaTime) {
 	for (EnemyBall *b : _enemies) {
 		for (Wall* w : _walls) {
-			if (w->hitWithBall(b->getPosition(), b->getRadius())) {
+			Wall::Side side = w->hitWithBall(b->getPosition(), b->getRadius());
+			if (side != Wall::NONE) {
 				if (w->isTemp()) {
 					lifeLost();
 					break;
 				}
 				else {
-					b->hit(w->getDirection());
+					b->hit(side);
 					break;
 				}
 			}
@@ -147,8 +148,8 @@ void Game::handleEnemiesMovment(float deltaTime) {
 		for (EnemyBall *b2 : _enemies) {
 			if (b2 == b) continue;
 			if (glm::distance(b->getPosition(), b2->getPosition()) <= b->getRadius() + b2->getRadius()) {
-				b->hit(Wall::VERTICAL);;
-				b2->hit(Wall::HORIZONTAL);
+				b->hit(b->getPosition().x > b2->getPosition().x ? Wall::RIGHT : Wall::LEFT);
+				b2->hit(b->getPosition().z > b2->getPosition().z ? Wall::TOP : Wall::BOTTOM);
 			}
 		}
 		b->update(deltaTime);

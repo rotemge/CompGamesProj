@@ -96,34 +96,34 @@ void Wall::init()
 	defineBuffers();
 }
 
-bool Wall::hitWithBall(glm::vec3 ball, float rad)
+Wall::Side Wall::hitWithBall(glm::vec3 ball, float rad)
 {
-	float upper = _vertices.at(0).z;
-	float lower = _vertices.at(15).z; // vertex #6
+	float upper = _vertices.at(0).z;  // A
+	float lower = _vertices.at(30).z; // E
 	float left = _vertices.at(0).x;
-	float right = _vertices.at(15).x;
+	float right = _vertices.at(30).x;
 	
-	if (lower >= ball.z - rad && upper <= ball.z - rad
+	if (lower >= ball.z - rad && lower < ball.z
 		&& ball.x >= left && ball.x <= right) {
-//		std::cout << "DEBUG :: hit from bellow" << std::endl;
-		return true; // hit from bellow
+		std::cout << "DEBUG :: hit from bellow" << std::endl;
+		return BOTTOM;
 	}
 	if (upper <= ball.z + rad && lower >= ball.z + rad
 		&& ball.x >= left && ball.x <= right) {
-//		std::cout << "DEBUG :: hit from above" << std::endl;
-		return true; // hit from above
+		std::cout << "DEBUG :: hit from above" << std::endl;
+		return TOP;
 	}
 	if (right >= ball.x - rad && left <= ball.x - rad
 		&& ball.z >= upper && ball.z <= lower) {
-//		std::cout << "DEBUG :: hit from the left" << std::endl;
-		return true; // hit from left
+		std::cout << "DEBUG :: hit from the right" << std::endl;
+		return RIGHT;
 	}
 	if (left <= ball.x + rad && right >= ball.x + rad
 		&& ball.z >= upper && ball.z <= lower) {
-//		std::cout << "DEBUG :: hit from the right" << std::endl;
-		return true; // hit from right
+		std::cout << "DEBUG :: hit from the left" << std::endl;
+		return LEFT;
 	}
-	return false;
+	return NONE;
 }
 
 bool Wall::gridOverlap(int row, int col) {

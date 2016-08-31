@@ -8,7 +8,7 @@ public:
 	EnemyBall(float limit);
 	void init();
 	GLuint update(float deltaTime);
-	void hit(Wall::Direction side);
+	void hit(Wall::Side side);
 	float getRadius() { return getSize() / 2 * _scaleFactor; }
 private:
 	const float _limit;

@@ -34,11 +34,11 @@ void EnemyBall::move(glm::mat4 base, glm::vec3 offset) {
 	_position += offset;
 	if (_position.x > lim || _position.x < -lim) {
 		_position.x = glm::clamp(_position.x, -lim, lim);
-		hit(Wall::VERTICAL);
+		hit(_position.x > lim ? Wall::LEFT : Wall::RIGHT);
 	}
 	else if(_position.z > lim || _position.z < -lim){
 		_position.z = glm::clamp(_position.z, -lim, lim);
-		hit(Wall::HORIZONTAL);
+		hit(_position.z > lim ? Wall::TOP : Wall::BOTTOM);
 	}
 	_model = glm::translate(base, _position);
 }
@@ -49,12 +49,27 @@ void EnemyBall::rotate(glm::mat4 base, float angle) {
 	_model = glm::rotate(base, _rotAng, axis);
 }
 
-void EnemyBall::hit(Wall::Direction side){
-	if (Wall::HORIZONTAL == side) {
-		_direction.z = -_direction.z;
-	}
-	else {
-		_direction.x = -_direction.x;
+void EnemyBall::hit(Wall::Side side){
+	switch (side)
+	{
+	case Wall::LEFT:
+		if (_direction.x > 0)
+			_direction.x = -_direction.x;
+		break;
+	case Wall::RIGHT:
+		if (_direction.x < 0)
+			_direction.x = -_direction.x;
+		break;
+	case Wall::TOP:
+		if (_direction.z > 0)
+			_direction.z = -_direction.z;
+		break;
+	case Wall::BOTTOM:
+		if (_direction.z < 0)
+			_direction.z = -_direction.z;
+		break;
+	default:
+		break;
 	}
 }
  

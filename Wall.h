@@ -10,6 +10,14 @@ public:
 		HORIZONTAL,
 		VERTICAL
 	};
+	enum Side
+	{
+		LEFT,
+		RIGHT,
+		TOP,
+		BOTTOM,
+		NONE
+	};
 	Wall(glm::vec3 center, int size, Direction dir, int index, int start, int end, float thickness, bool isTemp);
 	void init();
 	const float getThickness() const { return THICK; }
@@ -18,7 +26,7 @@ public:
 	const int getStart() const { return _start; }
 	const int getEnd() const { return _end; }
 	const int getIndex() const { return _index; }
-	bool hitWithBall(glm::vec3 pos, float rad);
+	Side hitWithBall(glm::vec3 pos, float rad);
 	bool gridOverlap(int row, int col);
 	void setTemp(bool temp);
 private:
